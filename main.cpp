@@ -1,10 +1,10 @@
-// File Name: assign1_js108.cpp
+// File Name: assign1_cac575.cpp
 //
-// Author: (Your name here, followed by collaborators, if any)
+// Author: Austin Childress
 // Date: 2/3/2020
 // Assignment Number: 1
-// CS 2308.255 Spring 2020
-// Instructor: Jill Seaman
+// CS 2308.252 Spring 2020
+// Instructor: Vladyslav Prokopenko
 //
 // (Description of what the program does goes here).
 
@@ -32,15 +32,12 @@ void findHighestDistanceToPriceRatio(Flight flightList[], int size, int &flightI
 int main() {
     ifstream in("flights.csv");
 
-    const int numFlights = 5;
+    Flight flightList[100]; // array of flight structs
+    int flightIndex; // index in array of flight with highest ratio
+    string cityChoice; // user given choice of city
 
-
-    Flight flightList[100];
-    int flightIndex;
-    string cityChoice;
-
-    int size = readFlights(flightList, in);
-    int selection = 0;
+    int size = readFlights(flightList, in); // size of array
+    int selection = 0; // user menu selection
 
     while(selection != 4) {
         cout << "Select the action" << endl
@@ -59,6 +56,7 @@ int main() {
                 getline(cin, cityChoice);
                 cout << endl;
                 printFlightsFrom(flightList, size, cityChoice);
+                cout << endl;
                 break;
             case 3:
                 findHighestDistanceToPriceRatio(flightList, size, flightIndex);
@@ -69,7 +67,7 @@ int main() {
                 << flightList[flightIndex].distance << endl << endl;
                 break;
             case 4:
-                cout << "Exiting the program.";
+                cout << "Exiting the program." << endl;
                 break;
             default:
                 break;
@@ -84,8 +82,16 @@ int main() {
     return 0;
 }
 
+//***********************************************************
+// readFlights: Reads flights from the file
+//
+// flightList: Flight array
+// in: Input file
+// returns: Returns size of array
+// ***********************************************************
+
 int readFlights(Flight flightList[], ifstream &in) {
-    int i = 0;
+    int i = 0; // iterator
     while(getline(in, flightList[i].from, ',')) {
         getline(in, flightList[i].to, ',');
         string price;
@@ -99,6 +105,13 @@ int readFlights(Flight flightList[], ifstream &in) {
     return i;
 }
 
+//***********************************************************
+// printFlights: Prints flights
+//
+// flightList: Flight array
+// size: Size of array
+// ***********************************************************
+
 void printFlights(Flight flightList[], int size) {
     for(int i = 0; i < size; i++) {
         cout << fixed << left << setw(19) << flightList[i].from << setw(11) << flightList[i].to <<  setw(4)
@@ -106,6 +119,14 @@ void printFlights(Flight flightList[], int size) {
     }
     cout << endl;
 }
+
+//***********************************************************
+// printFlightsFrom: Prints flights from given city
+//
+// flightList: Flight array
+// size: Size of array
+// name: Name of city to print flights
+// ***********************************************************
 
 void printFlightsFrom(Flight flightList[], int size, string name) {
     for(int i = 0; i < size; i++) {
@@ -115,9 +136,17 @@ void printFlightsFrom(Flight flightList[], int size, string name) {
     }
 }
 
+//***********************************************************
+// findHighestDistanceToPriceRatio: Finds the flight with the best distance to price ratio
+//
+// flightList: Flight array
+// size: Size of array
+// flightIndex: Index of flight with best ratio, changes in the function
+// ***********************************************************
+
 void findHighestDistanceToPriceRatio(Flight flightList[], int size, int &flightIndex) {
-    double ratio = 0;
-    flightIndex = 0;
+    double ratio = 0; // ratio
+    flightIndex = 0; // index of best ratio
     for(int i = 0; i < size; i++) {
         double compare = flightList[i].distance / flightList[i].price;
         if(compare > ratio) {
